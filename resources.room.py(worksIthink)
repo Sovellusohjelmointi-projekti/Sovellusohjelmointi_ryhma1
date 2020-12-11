@@ -20,7 +20,7 @@ class RoomListResource(Resource):
     def post(self):
         data = request.get_json()
 
-        recipe = Room(name=data['name'],
+        room = Room(name=data['name'],
                         description=data['description'],
                         date=data['date'],
                         startTime=data['startTime'],
@@ -42,9 +42,9 @@ class RoomResource(Resource):
         return room.data, HTTPStatus.OK
 
     def put(self, room_id):
-        data = room.get_json()
+        data = Room.get_json()
 
-        room = next((reoom for room in room_list if room.id == room_id), None)
+        room = next((room for room in room_list if room.id == room_id), None)
 
         if room is None:
             return {'message': 'room not found'}, HTTPStatus.NOT_FOUND
@@ -52,7 +52,7 @@ class RoomResource(Resource):
         room.name = data['name']
         room.description = data['description']
         room.date = data['date']
-        room.startTime = data['startTime']
+        room.start_time = data['start_time']
         room.duration = data['duration']
 
         return room.data, HTTPStatus.OK
