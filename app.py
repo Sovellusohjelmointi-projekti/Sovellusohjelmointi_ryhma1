@@ -48,7 +48,7 @@ def create_room():
         'id': len(rooms) + 1,
         'name': name,
         'date': data,
-        'startTime': startTime,
+        'start_time': start_time,
         'duration': duration
     }
 
