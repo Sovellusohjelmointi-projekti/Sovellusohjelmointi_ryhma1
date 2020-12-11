@@ -1,80 +1,38 @@
-from flask import Flask, jsonify, request
-from http import HTTPStatus
+from flask import Flask
+from flask_migrate import Migrate
+from flask_restful import Api
 
-app = Flask(__name__)
+from config import Config
+from extensions import db
+from resources.user import UserListResource
 
-rooms = [
-    {
-         "id": "1",
-         "name": "Alpha",
-         "description": "Auditorium",
-         "date": "",
-         "startTime": "",
-         "duration": ""
-    },
-    {
-        "id": "2",
-        "name": "Beta",
-        "description": "Auditorium",
-        "date": "",
-        "startTime": "",
-        "duration": ""
-    }
-]
+from resources.room import RoomListResource, RoomResource, RoomPublishResource
 
-@app.route('/roomreservation', methods=['GET'])
-def get_rooms():
-    return jsonify({'data': rooms})
 
-@app.route('/roomreservation/<int:room_id>', methods=['GET'])
-def get_room(room_id):
-    room = next((room for room in rooms if room['id'] == room_id), None)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-    if room:
-        return jsonify(room)
+    register_extensions(app)
+    register_resources(app)
 
-    return jsonify({'message': 'Room not found.'}), HTTPStatus.NOT_FOUND
+    return app
 
-@app.route('/roomreservation', methods=['POST'])
-def create_room():
-    data = request.get_json()
 
-    name = data.get('name')
-    description = data.get('description')
-    date = data.get('date')
-    startTime = data.get('startTime')
-    duration = data.get('duration')
-    room = {
-        'id': len(rooms) + 1,
-        'name': name,
-        'date': data,
-        'startTime': startTime,
-        'duration': duration
-    }
+def register_extensions(app):
+    db.init_app(app)
+    migrate = Migrate(app, db)
 
-    rooms.append(room)
 
-    return jsonify(room), HTTPStatus.CREATED
+def register_resources(app):
+    api = Api(app)
 
-@app.route('/roomreservation/<int:room_id>', methods=['PUT'])
-def update_room(room_id):
-    room = next((room for room in rooms if room['id'] == room_id), None)
+    api.add_resource(UserListResource, '/users')
+    api.add_resource(RoomListResource, '/rooms')
+    api.add_resource(RoomResource, '/rooms/<int:room_id>')
+    api.add_resource(RoomPublishResource, '/room/<int:room_id>/publish')
 
-    if not room:
-        return jsonify({'message': 'Room not found.'}), HTTPStatus.NOT_FOUND
-
-    data = request.get_json()
-
-    room.update(
-        {
-            'name': data.get('name'),
-            'date': data.get('date'),
-            'startTime': data.get('startTime'),
-            'duration': data.get('duration')
-        }
-    )
-
-    return jsonify(room)
 
 if __name__ == '__main__':
+    app = create_app()
     app.run()
