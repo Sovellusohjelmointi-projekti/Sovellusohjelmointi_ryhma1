@@ -9,7 +9,7 @@ rooms = [
         "name": "Alpha",
         "description": "Auditorium",
         "date": "",
-        "startTime": "",
+        "start_time": "",
         "duration": ""
     },
     {
