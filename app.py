@@ -9,7 +9,7 @@ rooms = [
          "name": "Alpha",
          "description": "Auditorium",
          "date": "",
-         "startTime": "",
+         "start_time": "",
          "duration": ""
     },
     {
@@ -17,7 +17,7 @@ rooms = [
         "name": "Beta",
         "description": "Auditorium",
         "date": "",
-        "startTime": "",
+        "start_time": "",
         "duration": ""
     }
 ]
@@ -42,7 +42,7 @@ def create_room():
     name = data.get('name')
     description = data.get('description')
     date = data.get('date')
-    startTime = data.get('startTime')
+    start_time = data.get('start_time')
     duration = data.get('duration')
     room = {
         'id': len(rooms) + 1,
@@ -69,7 +69,7 @@ def update_room(room_id):
         {
             'name': data.get('name'),
             'date': data.get('date'),
-            'startTime': data.get('startTime'),
+            'start_time': data.get('start_time'),
             'duration': data.get('duration')
         }
     )
