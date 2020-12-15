@@ -10,4 +10,3 @@ marshmallow==3.9.1
 webargs==7.0.1
 itsdangerous==1.1.0
 requests~=2.25.0
->>>>>>> Joonan
