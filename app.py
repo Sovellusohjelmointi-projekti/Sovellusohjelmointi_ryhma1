@@ -1,80 +1,52 @@
-from flask import Flask, jsonify, request
-from http import HTTPStatus
+from flask import Flask
+from flask_migrate import Migrate
+from flask_restful import Api
+
+from config import Config
+from extensions import db, jwt
+
+from resources.user import UserListResource, UserResource, MeResource, UserRoomListResource, UserActiveResource
+from resources.room import RoomListResource, RoomResource, RoomPublishResource
+from resources.token import TokenResource, RefreshResource, RevokeResource, black_list
 
 app = Flask(__name__)
 
-rooms = [
-    {
-         "id": "1",
-         "name": "Alpha",
-         "description": "Auditorium",
-         "date": "",
-         "startTime": "",
-         "duration": ""
-    },
-    {
-        "id": "2",
-        "name": "Beta",
-        "description": "Auditorium",
-        "date": "",
-        "startTime": "",
-        "duration": ""
-    }
-]
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-@app.route('/roomreservation', methods=['GET'])
-def get_rooms():
-    return jsonify({'data': rooms})
+    register_extensions(app)
+    register_resources(app)
 
-@app.route('/roomreservation/<int:room_id>', methods=['GET'])
-def get_room(room_id):
-    room = next((room for room in rooms if room['id'] == room_id), None)
+    return app
 
-    if room:
-        return jsonify(room)
+def register_extensions(app):
+    db.app = app
+    db.init_app(app)
+    migrate = Migrate(app, db)
+    jwt.init_app(app)
 
-    return jsonify({'message': 'Room not found.'}), HTTPStatus.NOT_FOUND
+    @jwt.token_in_blacklist_loader
+    def check_if_token_in_blacklist(decrypted_token):
+        jti = decrypted_token['jti']
 
-@app.route('/roomreservation', methods=['POST'])
-def create_room():
-    data = request.get_json()
+        return jti in black_list
 
-    name = data.get('name')
-    description = data.get('description')
-    date = data.get('date')
-    startTime = data.get('startTime')
-    duration = data.get('duration')
-    room = {
-        'id': len(rooms) + 1,
-        'name': name,
-        'date': data,
-        'startTime': startTime,
-        'duration': duration
-    }
+def register_resources(app):
+     api = Api(app)
 
-    rooms.append(room)
-
-    return jsonify(room), HTTPStatus.CREATED
-
-@app.route('/roomreservation/<int:room_id>', methods=['PUT'])
-def update_room(room_id):
-    room = next((room for room in rooms if room['id'] == room_id), None)
-
-    if not room:
-        return jsonify({'message': 'Room not found.'}), HTTPStatus.NOT_FOUND
-
-    data = request.get_json()
-
-    room.update(
-        {
-            'name': data.get('name'),
-            'date': data.get('date'),
-            'startTime': data.get('startTime'),
-            'duration': data.get('duration')
-        }
-    )
-
-    return jsonify(room)
+     api.add_resource(UserListResource, '/users')
+     api.add_resource(UserResource, '/users/<string:username>')
+     api.add_resource(UserRoomListResource, '/users/<string:username>/rooms')
+     api.add_resource(TokenResource, '/token')
+     api.add_resource(UserActivateResource, '/users/activate/<string:token>')
+     api.add_resource(RefreshResource, '/refresh')
+     api.add_resource(RevokeResource, '/revoke')
+     api.add_resource(MeResource, '/me')
+     api.add_resource(RoomListResource, '/rooms')
+     api.add_resource(RoomResource, '/rooms/<int:room_id>')
+     api.add_resource(RoomPublishResource, '/rooms/<int:room_id>/publish')
 
 if __name__ == '__main__':
+    app = create_app()
     app.run()
