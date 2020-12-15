@@ -25,6 +25,8 @@ class RoomSchema(Schema):
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
+    author = fields.Nested(UserSchema, attribute='user', dump_only=True, exclude=('email',))
+
     @post_dump(pass_many=True)
     def wrap(self, data, many, **kwargs):
 
@@ -40,5 +42,5 @@ class RoomSchema(Schema):
 
         if value > 21:
             raise ValidationError('Start time must not be greater than 21.')
-
-    author = fields.Nested(UserSchema, attribute='user', dump_only=True, exclude=('email',))
+        if value > 20:
+            raise ValidationError('Start time must not be greater than 20.')

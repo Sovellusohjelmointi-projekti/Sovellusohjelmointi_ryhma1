@@ -15,8 +15,6 @@ class Room(db.Model):
 
     user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
 
-    @property
-
     @classmethod
     def get_all_published(cls):
         return cls.query.filter_by(is_publish=True).all()
