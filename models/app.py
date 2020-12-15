@@ -19,6 +19,14 @@ rooms = [
         "date": "",
         "start_time": "",
         "duration": ""
+    },
+    {
+        "id": "3",
+        "name": "Gamma",
+        "description": "Auditorium",
+        "date": "",
+        "start_time": "",
+        "duration": ""
     }
 ]
 

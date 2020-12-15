@@ -20,3 +20,4 @@ def verify_token(token, max_age=(30 * 60), salt=None):
         return False
 
     return email
+
