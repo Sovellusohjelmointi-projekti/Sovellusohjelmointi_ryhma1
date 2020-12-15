@@ -5,11 +5,9 @@ from flask_restful import Api
 from config import Config
 from extensions import db, jwt
 
-from resources.user import UserListResource, UserResource, MeResource, UserRoomListResource, UserActiveResource
+from resources.user import UserListResource, UserResource, MeResource, UserRoomListResource, UserActivateResource
 from resources.room import RoomListResource, RoomResource, RoomPublishResource
 from resources.token import TokenResource, RefreshResource, RevokeResource, black_list
-
-app = Flask(__name__)
 
 def create_app():
     app = Flask(__name__)
@@ -49,4 +47,4 @@ def register_resources(app):
 
 if __name__ == '__main__':
     app = create_app()
-    app.run()
+    app.run(port=5000, debug=True)

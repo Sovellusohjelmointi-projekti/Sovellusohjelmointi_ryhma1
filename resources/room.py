@@ -77,7 +77,7 @@ class RoomResource(Resource):
         current_user = get_jwt_identity()
 
         if room.is_publish == False and room.user_id != current_user:
-            return {'message': 'Access is not allowed'}, HTTPStatus.FORBIDDEN
+            return {'message': 'Access is not allowed.'}, HTTPStatus.FORBIDDEN
 
         return room_schema.dump(room).data, HTTPStatus.OK
 

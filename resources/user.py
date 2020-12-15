@@ -2,7 +2,7 @@ from flask import request, url_for
 from flask_restful import Resource
 from http import HTTPStatus
 
-from mailgun import MailgunApi
+from mailgun import MailGunApi
 
 from utils import generate_token, verify_token
 
@@ -17,7 +17,7 @@ from schemas.user import UserSchema
 
 from flask_jwt_extended import jwt_optional, get_jwt_identity, jwt_required
 
-mailgun = MailgunApi(domain='sandbox76165a034aa940feb3ef785819641871.mailgun.org',api_key='441acf048aae8d85be1c41774563e001-19f318b0-739d5c30')
+mailgun = MailGunApi(domain='sandbox9be86adbecee46cb9cc4b6091e029175.mailgun.org', api_key='3ec268486f6770bb4f8a9f147fa227b3-e5da0167-69e770d9')
 
 user_schema = UserSchema()
 user_public_schema = UserSchema(exclude=('email', ))
@@ -31,7 +31,7 @@ class UserListResource(Resource):
 
         data, errors = user_schema.load(data=json_data)
         if errors:
-            return {'message': 'Validation errors.', 'errors': errors},HTTPStatus.BAD_REQUEST
+            return {'message': 'Validation errors.', 'errors': errors}, HTTPStatus.BAD_REQUEST
 
         if User.get_by_username(data.get('username')):
             return {'message': 'Username already used.'}, HTTPStatus.BAD_REQUEST
@@ -118,7 +118,7 @@ class UserActivateResource(Resource):
             return {'message': 'User not found'}, HTTPStatus.NOT_FOUND
 
         if user.is_active is True:
-            return {'message': 'The user account is already activated'},HTTPStatus.BAD_REQUEST
+            return {'message': 'The user account is already activated'}, HTTPStatus.BAD_REQUEST
 
         user.is_active = True
         user.save()

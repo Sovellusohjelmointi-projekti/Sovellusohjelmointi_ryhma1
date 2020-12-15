@@ -32,7 +32,7 @@ class TokenResource(Resource):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(identity=user.id)
 
-            return {'access_token': access_token, 'refresh_token': refresh_token}, HTTPStatus.OK
+        return {'access_token': access_token, 'refresh_token': refresh_token}, HTTPStatus.OK
 
 class RefreshResource(Resource):
 

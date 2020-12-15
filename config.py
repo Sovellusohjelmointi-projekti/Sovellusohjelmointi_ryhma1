@@ -5,7 +5,7 @@ class Config:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    SECRET_KEY = 'super-secret-key'
+    SECRET_KEY = 'kiisu'
     JWT_ERROR_MESSAGE_KEY = 'message'
 
     JWT_BLACKLIST_ENABLED = True

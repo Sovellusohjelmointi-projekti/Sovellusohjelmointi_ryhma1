@@ -38,7 +38,7 @@ class RoomSchema(Schema):
         if value < 16:
             raise ValidationError('Start time must be greater than 16.')
 
-        if value > 21:
-            raise ValidationError('Start time must not be greater than 21.')
+        if value > 20:
+            raise ValidationError('Start time must not be greater than 20.')
 
     author = fields.Nested(UserSchema, attribute='user', dump_only=True, exclude=('email',))
