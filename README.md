@@ -1,6 +1,9 @@
 # Sovellusohjelmointi_ryhma1
 Sovellusohjelmoinnin projekti
-TUASreservations, kiisu (tällä yhdistelmällä Milu ja Anni on koittanu)
+
+Kaikki pull-requestit tehty ja mergetty tarpeellinen
+
+TUASreservations, kiisu
 
 Ryhmätyön itsearviointi
 
@@ -30,6 +33,3 @@ Linkki Git repositoriin: Sovellusohjelmointi-projekti/Sovellusohjelmointi_ryhma1
 You can earn in maximum 5 more points by importing and using a package in your web service that was not learned during the exercises or online sessions i.e. was not included in the chapters of the book that were included as reading material during the course. 
 
 Luotiin sähköpostivarmistus käyttäjille kirjan kappaleen 6 mukaisesti käyttämällä Itsdangerous==1.1.0 -pakettia.
-
-# gitin siivouksen jälkeen koodit kansioihin siten, että kuka vain osaa copypastea koko projektin ja saa sen toimimaan!
-# myös ulkopuoliset ohjelmat ja niiden versiot mitä käytetty pitää näkyä
