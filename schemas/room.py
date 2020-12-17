@@ -17,6 +17,7 @@ class RoomSchema(Schema):
     name = fields.String(required=True, validate=[validate.Length(max=100)])
     description = fields.String(validate=[validate.Length(max=200)])
     date = fields.Integer(validate=validate_date)
+    month = fields.Integer()
     start_time = fields.Integer()
     duration = fields.String(validate=[validate.Length(max=1000)])
 
@@ -24,6 +25,8 @@ class RoomSchema(Schema):
 
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
+
+    author = fields.Nested(UserSchema, attribute='user', dump_only=True, exclude=('email',))
 
     @post_dump(pass_many=True)
     def wrap(self, data, many, **kwargs):
@@ -38,7 +41,13 @@ class RoomSchema(Schema):
         if value < 16:
             raise ValidationError('Start time must be greater than 16.')
 
-        if value > 21:
-            raise ValidationError('Start time must not be greater than 21.')
+        if value > 20:
+            raise ValidationError('Start time must not be greater than 20.')
 
-    author = fields.Nested(UserSchema, attribute='user', dump_only=True, exclude=('email',))
+    @validates('month')
+    def validate_month(self, value):
+        if value < 1:
+            raise ValidationError('Month must be greater than 1.')
+
+        if value > 12:
+            raise ValidationError('Month must not be greater than 12.')

@@ -7,6 +7,7 @@ class Room(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200))
     date = db.Column(db.Integer)
+    month = db.Column(db.Integer)
     start_time = db.Column(db.Integer)
     duration = db.Column(db.Integer)
     is_publish = db.Column(db.Boolean(), default=False)
@@ -14,8 +15,6 @@ class Room(db.Model):
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now(), onupdate=db.func.now())
 
     user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
-
-    @property
 
     @classmethod
     def get_all_published(cls):
